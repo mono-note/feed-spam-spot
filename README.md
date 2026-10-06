@@ -56,4 +56,4 @@ API key ถูกเก็บด้วย `chrome.storage.local` ภายใน
 
 ## License
 
-ยังไม่ได้กำหนด license สำหรับโปรเจกต์นี้
+โปรเจกต์นี้เผยแพร่ภายใต้ [MIT License](LICENSE)
