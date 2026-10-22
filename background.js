@@ -14,8 +14,8 @@ chrome.runtime.onMessage.addListener((post, _sender, reply) => {
 });
 
 async function classify(post) {
-  const { apiKey } = await chrome.storage.local.get("apiKey");
-  if (!apiKey) return null;
+  const { apiKey, enabled } = await chrome.storage.local.get(["apiKey", "enabled"]);
+  if (!apiKey || enabled === false) return null;
   const res = await fetch("https://api.typesafe.ai/v1/systemone", {
     method: "POST",
     headers: { "Content-Type": "application/json", Authorization: `Bearer ${apiKey}` },

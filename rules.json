@@ -1,0 +1,434 @@
+[
+ {
+  "id": 1,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||googlesyndication.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 2,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||doubleclick.net^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 3,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||googleadservices.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 4,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||googletagservices.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 5,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||adservice.google.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 6,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||google.com/pagead",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 7,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||google.com/ads",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 8,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||amazon-adsystem.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 9,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||criteo.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 10,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||criteo.net^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 11,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||taboola.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 12,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||outbrain.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 13,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||adnxs.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 14,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||pubmatic.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 15,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||rubiconproject.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 16,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||openx.net^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 17,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||casalemedia.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 18,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||adsrvr.org^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 19,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||media.net^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 20,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||ads.yahoo.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 21,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||advertising.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 22,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||popads.net^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 23,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||propellerads.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ },
+ {
+  "id": 24,
+  "action": {
+   "type": "block"
+  },
+  "condition": {
+   "urlFilter": "||adsterra.com^",
+   "resourceTypes": [
+    "script",
+    "image",
+    "sub_frame",
+    "xmlhttprequest",
+    "ping",
+    "media",
+    "other"
+   ]
+  }
+ }
+]

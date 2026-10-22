@@ -3,13 +3,17 @@ const COLORS = {
   scam: "#991b1b", bait: "#0891b2",
 };
 const MIN_P = 0.6;
-const seen = new WeakSet();
+let seen = new WeakSet();
 const cache = new Map(); // post text -> result
 const queue = [];
 let running = 0;
+let enabled = false;
+let hideAds = false;
+let generation = 0;
+const decorations = new Map();
 
 function pump() {
-  while (running < 3 && queue.length) {
+  while (enabled && running < 3 && queue.length) {
     running++;
     queue.shift()().finally(() => { running--; pump(); });
   }
@@ -44,7 +48,22 @@ const ADAPTERS = {
     }),
   },
 };
-const site = ADAPTERS[location.hostname.includes("facebook") ? "fb" : "x"];
+// any other site: known ad containers are labelled locally (no API call), <article> text is classified
+const AD = 'ins.adsbygoogle, [data-ad-slot], [data-google-query-id], [id^="div-gpt-ad"], [id^="google_ads"], [class*="sponsored" i], [aria-label="Advertisement" i]';
+ADAPTERS.generic = {
+  posts: () => document.querySelectorAll(`${AD}, article`),
+  read: (a) => {
+    const text = a.innerText?.trim().slice(0, 2000) ?? "";
+    return {
+      text: text.length >= 80 ? text : "", // too short to judge
+      author: "",
+      links: [...a.querySelectorAll("a[href]")].map((l) => l.hostname).filter((h) => h && h !== location.hostname),
+      promoted: a.matches(AD),
+    };
+  },
+};
+const h = location.hostname;
+const site = ADAPTERS[/(^|\.)facebook\.com$/.test(h) ? "fb" : /(^|\.)(x|twitter)\.com$/.test(h) ? "x" : "generic"];
 
 const NAMES = {
   ad: "โฆษณา", spam: "สแปม", sales: "ขายของ", affiliate: "ลิงก์ Affiliate",
@@ -52,6 +71,14 @@ const NAMES = {
 };
 
 function badge(a, labels) {
+  if (!enabled) return;
+  const originalStyle = a.getAttribute("style");
+  if (hideAds && labels.includes("ad")) {
+    a.style.display = "none";
+    decorations.set(a, () => (originalStyle === null ? a.removeAttribute("style") : a.setAttribute("style", originalStyle)));
+    return;
+  }
+  const animations = [];
   const c = COLORS[labels[0]];
   a.style.position = "relative";
   const box = document.createElement("div");
@@ -75,27 +102,38 @@ function badge(a, labels) {
   const play = () => {
   a.style.cssText += `;outline:3px solid ${c};outline-offset:-3px;background:${c}33`;
   dim.style.visibility = stamp.style.visibility = box.style.visibility = "visible";
-  dim.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 });
-  stamp.animate([
+  animations.push(dim.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 300 }));
+  animations.push(stamp.animate([
     { opacity: 0, transform: "translate(-50%,-50%) rotate(-12deg) scale(3)" },
     { opacity: 1, transform: "translate(-50%,-50%) rotate(-12deg) scale(.92)", offset: .6 },
     { opacity: .95, transform: "translate(-50%,-50%) rotate(-12deg) scale(1)" },
-  ], { duration: 450, easing: "cubic-bezier(.2,.8,.3,1)" });
-  a.animate([{ transform: "translate(0,0)" }, { transform: "translate(-3px,2px)", offset: .6 }, { transform: "translate(2px,-1px)", offset: .75 }, { transform: "translate(0,0)" }], { duration: 450 }); // impact shake
+  ], { duration: 450, easing: "cubic-bezier(.2,.8,.3,1)" }));
+  animations.push(a.animate([{ transform: "translate(0,0)" }, { transform: "translate(-3px,2px)", offset: .6 }, { transform: "translate(2px,-1px)", offset: .75 }, { transform: "translate(0,0)" }], { duration: 450 })); // impact shake
   };
   // play once, when half the post (or half the screen, for tall posts) is visible
   const io = new IntersectionObserver(([e]) => {
+    if (!enabled || !decorations.has(a)) return;
     if (e.intersectionRatio >= .5 || e.intersectionRect.height >= innerHeight / 2) { io.disconnect(); play(); }
   }, { threshold: [0, .25, .5, .75, 1] });
+  decorations.set(a, () => {
+    io.disconnect();
+    animations.forEach((animation) => animation.cancel());
+    box.remove();
+    dim.remove();
+    stamp.remove();
+    if (originalStyle === null) a.removeAttribute("style");
+    else a.setAttribute("style", originalStyle);
+  });
   io.observe(a);
 }
 
 function handle(a) {
-  if (seen.has(a)) return;
+  if (!enabled || seen.has(a)) return;
   seen.add(a);
   const { promoted, ...post } = site.read(a);
   if (promoted) return badge(a, ["ad"]); // platform's own label, no API call
   if (!post.text) return;
+  const currentGeneration = generation;
   queue.push(async () => {
     try {
       if (!cache.has(post.text)) {
@@ -105,6 +143,7 @@ function handle(a) {
     } catch (e) {
       return console.warn("feed-spam-spotter:", e.message); // e.g. extension reloaded: refresh the page
     }
+    if (!enabled || currentGeneration !== generation) return;
     const r = cache.get(post.text);
     if (!r) return;
     const hits = Object.keys(r).filter((k) => r[k] >= MIN_P).sort((x, y) => r[y] - r[x]);
@@ -113,6 +152,45 @@ function handle(a) {
   pump();
 }
 
-const scan = () => site.posts().forEach(handle);
-new MutationObserver(scan).observe(document.body, { childList: true, subtree: true });
-scan();
+const scan = () => {
+  if (!enabled) return;
+  for (const [post, cleanup] of decorations) {
+    if (!post.isConnected) {
+      cleanup();
+      decorations.delete(post);
+      seen.delete(post);
+    }
+  }
+  site.posts().forEach(handle);
+};
+const observer = new MutationObserver(scan);
+function setEnabled(value) {
+  if (enabled === value) return;
+  enabled = value;
+  generation++;
+  if (enabled) {
+    observer.observe(document.body, { childList: true, subtree: true });
+    scan();
+  } else {
+    observer.disconnect();
+    queue.length = 0;
+    decorations.forEach((cleanup) => cleanup());
+    decorations.clear();
+    seen = new WeakSet();
+  }
+}
+let settingsChanged = false;
+chrome.storage.onChanged.addListener((changes, area) => {
+  if (area === "local" && changes.mode) {
+    hideAds = changes.mode.newValue === "hide";
+    if (enabled) { setEnabled(false); setEnabled(true); } // re-render with the new mode
+  }
+  if (area === "local" && changes.enabled) {
+    settingsChanged = true;
+    setEnabled(changes.enabled.newValue !== false);
+  }
+});
+chrome.storage.local.get({ enabled: true, mode: "label" }, ({ enabled: value, mode }) => {
+  hideAds = mode === "hide";
+  if (!settingsChanged) setEnabled(value !== false);
+});
